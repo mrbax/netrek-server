@@ -209,8 +209,8 @@ void init_torps()
 	 tdy = (double) ts * Sin[t->t_dir] * WARP1;
 
 #ifdef nodef
-	 tx += rint(_avsdelay * tdx);
-	 ty += rint(_avsdelay * tdy);
+	 tx += (int) nearbyint(_avsdelay * tdx);
+	 ty += (int) nearbyint(_avsdelay * tdy);
 #endif
 
 	 tp->tp_dist 	= tdist;
@@ -1811,13 +1811,5 @@ get_bearing(xme, yme, x, y, dir)
   int xme, yme, x, y;
   int dir;
 {
-  int phi=0;
-
-  phi = ((int) (atan2((double) (x-xme), (double) (yme-y)) / 3.14159 * 128.));
-  if (phi < 0)
-    phi = 256 + phi;
-  if (phi >= dir)
-    return((unsigned char) (phi - dir));
-  else
-    return((unsigned char) (256 + phi - dir));
+  return (u_char) ((int) nearbyintf(128.f * atan2f(x - xme, yme - y) / M_PI) - dir);
 }

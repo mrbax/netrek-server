@@ -38,12 +38,9 @@ int angdist(u_char x, u_char y)
 ** Calculate a course from (mx, my) to (x, y)
 */
 
-unsigned char to_dir(int x, int y, int mx, int my)
+u_char to_dir(int x, int y, int mx, int my)
 {
-    double course = rint(atan2((double) (x - mx), (double) (my - y))
-                         / 3.14159 * 128.);
-    if (course < 0) course += 256.;
-    return (unsigned char) course;
+    return (u_char) ((int) nearbyintf(128.f * atan2f(x - mx, my - y) / M_PI) % 256);
 }
 
 #ifdef DEFINE_NINT

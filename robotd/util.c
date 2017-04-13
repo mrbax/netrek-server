@@ -188,8 +188,7 @@ unsigned char get_course(x, y)
    if(x == me->p_x && y == me->p_y)
       return 0;
 
-   return (unsigned char) (atan2((double) (x- me->p_x),
-      (double) (me->p_y - y)) / 3.141592 * 128.);
+   return (u_char) (int) nearbyintf(128.f * atan2f(x - me->p_x, me->p_y - y) / M_PI );
 }
 
 /* get course from (mx,my) to (x,y) */
@@ -199,8 +198,7 @@ unsigned char get_acourse(x, y, mx, my)
    if(x == mx && y == my)
       return 0;
 
-   return (unsigned char) (atan2((double) (x - mx),
-      (double) (my - y)) / 3.14159 * 128.);
+   return (u_char) (int) nearbyintf(128.f * atan2f(x - mx, my - y) / M_PI );
 }
 
 unsigned char get_awrapcourse(x, y, mx, my)
@@ -425,11 +423,9 @@ int ihypot(xd1, yd1)
 }
 
 #if ! HAVE_NINT
-int nint(x)
-   double x;
+int nint(double x)
 {
-   double	rint();
-   return (int)rint(x);
+   return (int) nearbyint(x);
 }
 #endif
 

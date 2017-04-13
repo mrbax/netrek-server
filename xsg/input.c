@@ -357,17 +357,14 @@ W_Window ww;
 int x, y;
 {
     if (ww == mapw) {
-	int	me_x, me_y;
+	int me_x, me_y;
 
 	me_x = me->p_x * WINSIDE / GWIDTH;
 	me_y = me->p_y * WINSIDE / GWIDTH;
-	return((unsigned char) (atan2((double) (x - me_x),
-	    (double) (me_y - y)) / 3.14159 * 128.));
+	return (u_char) (int) nearbyintf(128.f * atan2f(x - me_x, me_y - y) / M_PI);
     }
     else
-	return((unsigned char) (atan2((double) (x - WINSIDE/2),
-	    (double) (WINSIDE/2 - y))
-		/ 3.14159 * 128.));
+	return (u_char) (int) nearbyintf(128.f * atan2f(x - WINSIDE / 2, WINSIDE / 2 - y) / M_PI);
 }
 
 lock(ww, x, y)

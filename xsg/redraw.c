@@ -356,8 +356,7 @@ local()
 	/* ATM - show tractor/pressor beams */
 	/* (works for xsg since we have p_tractor) */
 	if (j->p_flags & PFTRACT || j->p_flags & PFPRESS) {
-	    double theta;
-	    unsigned char dir;
+	    int dir;
 	    int lx[2], ly[2];
 
 	    tx = (players[j->p_tractor].p_x - me->p_x) / SCALE + WINSIDE / 2;
@@ -366,15 +365,13 @@ local()
 	    if (tx == dx && ty == dy)
 		continue;		/* this had better be last in for(..) */
 
-#define XPI	3.1415926
-	    theta = atan2((double) (tx - dx), (double) (dy - ty)) + XPI / 2.0;
-	    dir = (unsigned char) (theta / XPI * 128.0);
+	    dir = (int) nearbyintf(128.f * (atan2f(tx - dx, dy - ty) + M_PI_2) / M_PI);
 
 	    lx[0] = tx + (Cos[dir] * (shield_width/2));
 	    ly[0] = ty + (Sin[dir] * (shield_width/2));
 	    lx[1] = tx - (Cos[dir] * (shield_width/2));
 	    ly[1] = ty - (Sin[dir] * (shield_width/2));
-#undef XPI
+
 	    if(j->p_flags & PFPRESS) {	/* TSH 3/10/93 */
 	       W_MakeTractLine(w, dx, dy, lx[0], ly[0], W_Yellow);
 	       W_MakeTractLine(w, dx, dy, lx[1], ly[1], W_Yellow);
@@ -807,8 +804,7 @@ map()
 newcourse(x, y)
 int x, y;
 {
-    return((unsigned char) (atan2((double) (x - me->p_x),
-	(double) (me->p_y - y)) / 3.14159 * 128.));
+    return (u_char) (int) nearbyintf(128.f * atan2f(x - me->p_x, me->p_y - y) / M_PI);
 }
 
 /* 
