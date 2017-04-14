@@ -23,6 +23,9 @@
 #define SA_NOCLDWAIT	0
 #endif
 
+#define PI_F 3.1415927f
+#define PI_2_F 1.5707964f
+
 #define ERROR(l,x)	{ if (errorlevel >= l) { printf x; } }
 
 #define FNAMESIZE	256

@@ -365,7 +365,7 @@ local()
 	    if (tx == dx && ty == dy)
 		continue;		/* this had better be last in for(..) */
 
-	    dir = (int) nearbyintf(128.f * (atan2f(tx - dx, dy - ty) + M_PI_2) / M_PI);
+	    dir = (int) nearbyintf(128.f * (atan2f(tx - dx, dy - ty) + PI_2_F) / PI_F);
 
 	    lx[0] = tx + (Cos[dir] * (shield_width/2));
 	    ly[0] = ty + (Sin[dir] * (shield_width/2));
@@ -804,7 +804,7 @@ map()
 newcourse(x, y)
 int x, y;
 {
-    return (u_char) (int) nearbyintf(128.f * atan2f(x - me->p_x, me->p_y - y) / M_PI);
+    return (u_char) (int) nearbyintf(128.f * atan2f(x - me->p_x, me->p_y - y) / PI_F);
 }
 
 /* 

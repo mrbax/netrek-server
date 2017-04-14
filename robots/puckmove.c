@@ -1220,7 +1220,7 @@ void do_faceoff(void)
 	
 unsigned char getcourse(int x, int y)
 {
-	return (u_char) (int) nearbyintf(128.f * atan2f(x - me->p_x, me->p_y - y) / M_PI);
+	return (u_char) (int) nearbyintf(128.f * atan2f(x - me->p_x, me->p_y - y) / PI_F);
 }
 
 int isInPossession(struct Enemy *enemy_buf)

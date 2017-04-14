@@ -188,7 +188,7 @@ unsigned char get_course(x, y)
    if(x == me->p_x && y == me->p_y)
       return 0;
 
-   return (u_char) (int) nearbyintf(128.f * atan2f(x - me->p_x, me->p_y - y) / M_PI );
+   return (u_char) (int) nearbyintf(128.f * atan2f(x - me->p_x, me->p_y - y) / PI_F);
 }
 
 /* get course from (mx,my) to (x,y) */
@@ -198,7 +198,7 @@ unsigned char get_acourse(x, y, mx, my)
    if(x == mx && y == my)
       return 0;
 
-   return (u_char) (int) nearbyintf(128.f * atan2f(x - mx, my - y) / M_PI );
+   return (u_char) (int) nearbyintf(128.f * atan2f(x - mx, my - y) / PI_F);
 }
 
 unsigned char get_awrapcourse(x, y, mx, my)

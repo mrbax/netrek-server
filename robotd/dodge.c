@@ -1811,5 +1811,5 @@ get_bearing(xme, yme, x, y, dir)
   int xme, yme, x, y;
   int dir;
 {
-  return (u_char) ((int) nearbyintf(128.f * atan2f(x - xme, yme - y) / M_PI) - dir);
+  return (u_char) ((int) nearbyintf(128.f * atan2f(x - xme, yme - y) / PI_F) - dir);
 }

@@ -40,7 +40,7 @@ int angdist(u_char x, u_char y)
 
 u_char to_dir(int x, int y, int mx, int my)
 {
-    return (u_char) ((int) nearbyintf(128.f * atan2f(x - mx, my - y) / M_PI) % 256);
+    return (u_char) ((int) nearbyintf(128.f * atan2f(x - mx, my - y) / PI_F) % 256);
 }
 
 #ifdef DEFINE_NINT
