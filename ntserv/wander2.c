@@ -10,8 +10,8 @@
 static int pl_home[4];
 static int pl_core[4][10];
 static int pl_dist[4][10];
-static const float increment = 0.016;
-static const float incrementrecip = 62.5;
+static const float increment = 0.016f;
+static const float incrementrecip = 62.5f;
 static float *Cosine, *Sine;
 
 static void pfree(void)
@@ -30,15 +30,15 @@ void pinit(void)
 
     pre = 3.5 / increment;
 
-    Cosine = (float *) calloc(sizeof(float), pre);
+    Cosine = (float *) malloc(pre * sizeof(float));
     if (Cosine == NULL) abort();
-    Sine = (float *) calloc(sizeof(float), pre);
+    Sine = (float *) malloc(pre * sizeof(float));
     if (Sine == NULL) abort();
     atexit(pfree);
 
     for (i = 0; i < pre; i++) {
-        Cosine[i] = cosf(i*increment);
-	    Sine[i] = sinf(i*increment);
+	Cosine[i] = cosf(i*increment);
+	Sine[i] = sinf(i*increment);
     }
 
     pl_home[0] = 0;

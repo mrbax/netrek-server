@@ -365,7 +365,8 @@ local()
 	    if (tx == dx && ty == dy)
 		continue;		/* this had better be last in for(..) */
 
-	    dir = (int) nearbyintf(128.f * (atan2f(tx - dx, dy - ty) + PI_2_F) / PI_F);
+	    /* atan2( x, -y ) + pi/2 == atan2( -y, -x ) */
+	    dir = vector_direction(ty, dx, dy, tx);
 
 	    lx[0] = tx + (Cos[dir] * (shield_width/2));
 	    ly[0] = ty + (Sin[dir] * (shield_width/2));
@@ -799,12 +800,6 @@ map()
     }
    W_FlushLineCaches(mapw);
    W_FlushPointCaches(mapw);
-}
-
-newcourse(x, y)
-int x, y;
-{
-    return (u_char) (int) nearbyintf(128.f * atan2f(x - me->p_x, me->p_y - y) / PI_F);
 }
 
 /* 

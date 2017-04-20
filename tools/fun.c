@@ -65,7 +65,7 @@ double fpre;
 
 int main(int argc, char **argv)
 {
-    double dx, dy;
+    float dx, dy;
     int i,j;
 
     int pre;
@@ -129,15 +129,15 @@ int main(int argc, char **argv)
     pl_home[3] = 30; pl_core[3][0] = 34; pl_core[3][1] = 37; pl_core[3][2] = 38; pl_core[3][3] = 39; 
 
     for (i = 0; i < 40; i++) {
-	dx = (double) (planets[i].pl_x - GWIDTH/2);
-	dy = (double) (GWIDTH/2 - planets[i].pl_y);
-	pl_dist[i] = sqrt(dx * dx + dy * dy);
+	dx = planets[i].pl_x - GWIDTH/2;
+	dy = GWIDTH/2 - planets[i].pl_y;
+	pl_dist[i] = (int) nearbyintf(sqrtf(dx * dx + dy * dy));
     }
     for (j = 0; j < 4; j++) 
       for (i = 0; i < 4; i++) {
-        dx = (double) (planets[pl_core[j][i]].pl_x - planets[pl_home[j]].pl_x);
-        dy = (double) (planets[pl_home[j]].pl_y - planets[pl_core[j][i]].pl_y);
-        pl_dist1[j][i] = sqrt(dx * dx + dy * dy);
+        dx = planets[pl_core[j][i]].pl_x - planets[pl_home[j]].pl_x;
+        dy = planets[pl_home[j]].pl_y - planets[pl_core[j][i]].pl_y;
+        pl_dist1[j][i] = (int) nearbyintf(sqrtf(dx * dx + dy * dy));
 	}
 
     if (topgun) { topgun=0; ttimer=5; } 	/* start topgun in 5 sec */
@@ -258,9 +258,9 @@ void pmove(void)
 	     dir = dir * incrementrecip + 0.5f;
           planets[pl_core[j][i]].pl_x = planets[pl_home[j]].pl_x + pl_dist1[j][i] * COS(dir);
           planets[pl_core[j][i]].pl_y = planets[pl_home[j]].pl_y + pl_dist1[j][i] * SIN(dir);
-	  dx = (float) (planets[pl_core[j][i]].pl_x - GWIDTH / 2);
-	  dy = (float) (GWIDTH / 2 - planets[pl_core[j][i]].pl_y);
-	  pl_dist[i] = sqrtf(dx * dx + dy * dy);
+	  dx = planets[pl_core[j][i]].pl_x - GWIDTH / 2;
+	  dy = GWIDTH / 2 - planets[pl_core[j][i]].pl_y;
+	  pl_dist[i] = (int) nearbyintf(sqrtf(dx * dx + dy * dy));
           planets[pl_core[j][i]].pl_flags |= PLREDRAW;
         }
 
@@ -274,8 +274,8 @@ void pmove(void)
 	else
 	    dir = dir * incrementrecip + 0.5f;
 
-	planets[i].pl_x = GWIDTH / 2 + (int) (pl_dist[i] * COS(dir));
-	planets[i].pl_y = GWIDTH / 2 + (int) (pl_dist[i] * SIN(dir));
+	planets[i].pl_x = GWIDTH / 2 + (int) nearbyintf(pl_dist[i] * COS(dir));
+	planets[i].pl_y = GWIDTH / 2 + (int) nearbyintf(pl_dist[i] * SIN(dir));
 
 	planets[i].pl_flags |= PLREDRAW;
       }

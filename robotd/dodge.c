@@ -34,6 +34,7 @@ static void add_mypressor(int *x, int *y);
 static void tp_change(struct player *j1, struct player *j2, int dist, int dir, int *x, int *y, int *hx, int *hy);
 static void predict_pltorp(struct player *j, unsigned char *pt_dir, int *pt_x, int *pt_y, int mx, int my);
 static void predict_storp(struct player *j, unsigned char *pt_dir, int *pt_x, int *pt_y, int mx, int my);
+static u_char get_bearing(int xme, int yme, int x, int y, int dir);
 
 static int 		_myspeed;
 static unsigned char	_mydir;
@@ -181,7 +182,7 @@ void init_torps()
 		  /* can we det torps intended for defend? */
 	       struct player     *dp = _state.protect_player->p;
 	       unsigned char	 tcrs;
-	       tcrs = get_acourse(dp->p_x, dp->p_y, tx,ty);
+	       tcrs = vector_direction(tx, ty, dp->p_x, dp->p_y);
 	       if(angdist(tcrs, t->t_dir) < 16){
 		  defend_det_torps ++;
 	       }
@@ -190,7 +191,7 @@ void init_torps()
 
 	 /* goto next torp if this one is already past or won't possibly
 	    hit us */
-	 tdir = get_acourse(me->p_x, me->p_y, tx, ty);
+	 tdir = vector_direction(tx, ty, me->p_x, me->p_y);
 	 tdi = angdist(tdir, t->t_dir);
 	 /* TEST -- was 92 */
 	 if(tdi > 92)
@@ -263,7 +264,7 @@ check_plasma:;
             _state.ptorp_danger = 1;
          /* goto next torp if this one is already past or won't possibly
             hit us */
-         tdir = get_acourse(me->p_x, me->p_y, tx, ty);
+	 tdir = vector_direction(tx, ty, me->p_x, me->p_y);
          tdi = angdist(tdir, pt->pt_dir);
          /* TEST -- was 92 */
          if(tdi > 92){
@@ -1243,7 +1244,7 @@ void check_dettorps(t, k)
       }
       else {
 	 /* inaxact check */
-	 tdir = get_acourse(x,y, t->t_x, t->t_y);
+	 tdir = vector_direction(t->t_x, t->t_y, x, y);
 	 if(angdist(tdir, t->t_dir) > 80){
 	    if(_state.human || detall)
 	       t->t_shoulddet = 1;
@@ -1257,7 +1258,7 @@ void check_dettorps(t, k)
       }
    }
    else if(ct->p->p_flags & PFCLOAK){
-      tdir = get_acourse(x,y, t->t_x, t->t_y);
+      tdir = vector_direction(t->t_x, t->t_y, x, y);
       if(ihypot(dx,dy) > 3000 && angdist(tdir, t->t_dir) > 128){
 	 if(_state.human || detall)
 	    t->t_shoulddet = 1;
@@ -1757,7 +1758,6 @@ void predict_pltorp(j, pt_dir, pt_x, pt_y, mx,my)
    int			*pt_x, *pt_y;	/* ptorp position */
    int			mx,my;		/* my position */
 {
-   unsigned char	get_bearing();
    int			heading;
    int			pt;
 
@@ -1788,7 +1788,6 @@ void predict_storp(j, pt_dir, pt_x, pt_y, mx,my)
    int			*pt_x, *pt_y;	/* ptorp position */
    int			mx,my;		/* my position */
 {
-   unsigned char	get_bearing();
    int			heading;
 
    if(get_bearing(*pt_x, *pt_y, mx, my, *pt_dir) > 128){
@@ -1806,10 +1805,7 @@ void predict_storp(j, pt_dir, pt_x, pt_y, mx,my)
    *pt_y += (double) j->p_ship.s_plasmaspeed * Sin[*pt_dir] * WARP1;
 }
 
-unsigned char
-get_bearing(xme, yme, x, y, dir)
-  int xme, yme, x, y;
-  int dir;
+u_char get_bearing(int xme, int yme, int x, int y, int dir)
 {
-  return (u_char) ((int) nearbyintf(128.f * atan2f(x - xme, yme - y) / PI_F) - dir);
+  return (u_char) (vector_direction(xme, yme, x, y) - dir);
 }

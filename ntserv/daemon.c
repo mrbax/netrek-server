@@ -1986,8 +1986,10 @@ static void t_track(struct torp *t)
     /*
      * Get the direction that the potential target is from the torp;
      * Now use the torp's direction and the heading to determine the
-     * bearing of the potential target from the current direction.  */
-    bearing = ((int) nearbyintf(128.f * atan2f(dy, dx) / PI_F) - 64 - t->t_dir) % 256;
+     * bearing of the potential target from the current direction.
+     * atan2( y, x ) - pi/2 == atan2( -x, y )
+     */
+    bearing = (u_char) (vector_direction(dx, dy, 0, 0) - t->t_dir);
 
     /*
      * To prevent the torpedo from tracking unreachable targets:
@@ -2007,11 +2009,10 @@ static void t_track(struct torp *t)
 
   /*
    * Found a target, or not.  Adjust torpedo direction.  */
-  if (turn < 0) {
-    t->t_dir = ((int) t->t_dir - t->t_turns) % 256;
-  } else if (turn > 0) {
-    t->t_dir = ((int) t->t_dir + t->t_turns) % 256;
-  }
+  if (turn < 0)
+    t->t_dir = (u_char) (t->t_dir - t->t_turns);
+  else if (turn > 0)
+    t->t_dir = (u_char) (t->t_dir + t->t_turns);
 }
 
 static void t_move(struct torp *t)
