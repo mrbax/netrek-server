@@ -59,7 +59,7 @@ int angdist(x, y)
 
 u_char vector_direction(int origin_x, int origin_y, int destination_x, int destination_y)
 {
-    return (u_char) ((int) nearbyintf(40.743665f * atan2f(destination_x - origin_x, origin_y - destination_y)));
+    return (u_char) ((int) nearbyintf(40.743665f * atan2f(destination_x - origin_x, origin_y - destination_y)));  /* (128/pi)*theta */
 }
 
 #ifdef hpux
